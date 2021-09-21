@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/WebPhimClub/static/css/main.9b35de01.chunk.css",
-    "main.js": "/WebPhimClub/static/js/main.0b04fb3f.chunk.js",
-    "main.js.map": "/WebPhimClub/static/js/main.0b04fb3f.chunk.js.map",
+    "main.js": "/WebPhimClub/static/js/main.ddecc110.chunk.js",
+    "main.js.map": "/WebPhimClub/static/js/main.ddecc110.chunk.js.map",
     "runtime-main.js": "/WebPhimClub/static/js/runtime-main.7b581814.js",
     "runtime-main.js.map": "/WebPhimClub/static/js/runtime-main.7b581814.js.map",
-    "static/js/2.f3f0e54a.chunk.js": "/WebPhimClub/static/js/2.f3f0e54a.chunk.js",
-    "static/js/2.f3f0e54a.chunk.js.map": "/WebPhimClub/static/js/2.f3f0e54a.chunk.js.map",
+    "static/js/2.5109bd6d.chunk.js": "/WebPhimClub/static/js/2.5109bd6d.chunk.js",
+    "static/js/2.5109bd6d.chunk.js.map": "/WebPhimClub/static/js/2.5109bd6d.chunk.js.map",
     "index.html": "/WebPhimClub/index.html",
     "static/css/main.9b35de01.chunk.css.map": "/WebPhimClub/static/css/main.9b35de01.chunk.css.map",
-    "static/js/2.f3f0e54a.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.f3f0e54a.chunk.js.LICENSE.txt",
+    "static/js/2.5109bd6d.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.5109bd6d.chunk.js.LICENSE.txt",
     "static/media/sleepCat.78ad3311.gif": "/WebPhimClub/static/media/sleepCat.78ad3311.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.7b581814.js",
-    "static/js/2.f3f0e54a.chunk.js",
+    "static/js/2.5109bd6d.chunk.js",
     "static/css/main.9b35de01.chunk.css",
-    "static/js/main.0b04fb3f.chunk.js"
+    "static/js/main.ddecc110.chunk.js"
   ]
 }
