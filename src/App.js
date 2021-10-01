@@ -15,15 +15,15 @@ import {
   AiOutlineClose,
 } from "react-icons/ai";
 // import { BsCollectionPlayFill } from "react-icons/bs";
+import { Home, Collection, FAQ } from "./contentApp";
 ///////////////////////////////////////////////////import library function
 import {
   BrowserRouter as Router,
-  // Route,
-  // Switch,
+  Route,
+  Switch,
   Link,
-  // useParams,
-  // useRouteMatch,
-  // useParams,
+  useParams,
+  useRouteMatch,
 } from "react-router-dom";
 
 // D:\my work\web dev\javascript\reactjs\My_project\offline\WebPhimClub\public\icon_head.png
@@ -35,7 +35,7 @@ export default class App extends Component {
       <div className="app">
         <Router>
           <HeaderApp />
-          {/* <ContentApp /> */}
+          <ContentApp />
         </Router>
         {/* <FooterApp /> */}
       </div>
@@ -142,19 +142,19 @@ class HeaderApp extends Component {
         <div className="header-bar">
           <div className="">
             <Link
-              // to="/"
+              to="/"
               name="home"
               className="header-bar-link link-decoration"
             >
               <img src={Logo} alt="logo web" className="home"></img>
             </Link>
-            <Link className="header-bar-link link-decoration">
+            <Link to="/movie" className="header-bar-link link-decoration">
               <span className="header-bar-text ">Movie</span>
             </Link>
-            <Link className="header-bar-link link-decoration">
+            <Link to="/collection" className="header-bar-link link-decoration">
               <span className="header-bar-text ">Collection</span>
             </Link>
-            <Link className="header-bar-link link-decoration">
+            <Link to="/FAQ" className="header-bar-link link-decoration">
               <span className="header-bar-text">FAQ</span>
             </Link>
           </div>
@@ -262,6 +262,27 @@ class HeaderSearchResult extends Component {
         ) : (
           <div></div>
         )}
+      </div>
+    );
+  }
+}
+
+//////////////////////////////////////////ContentApp///////////////////////////////////////////////////
+class ContentApp extends Component {
+  render() {
+    return (
+      <div className="contentApp">
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/collection">
+            <Collection />
+          </Route>
+          <Route path="FAQ">
+            <FAQ />
+          </Route>
+        </Switch>
       </div>
     );
   }

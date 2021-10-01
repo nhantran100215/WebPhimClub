@@ -6,6 +6,9 @@
 
 :root {
   --BGC-header: #032541;
+  --BGC-backdrop-gradient1: #033654d7;
+  --BGC-backdrop-gradient2: #017aa3c7;
+  --BGC-button: #13c9bf;
   --posi-header-bar: 0;
 }
 
@@ -22,7 +25,7 @@ body {
   .app {
     // display: none;
     width: 100%;
-    height: 200vh;
+    // height: 200vh;
     position: relative;
     .header {
       background-color: var(--BGC-header);
@@ -179,6 +182,60 @@ body {
             .text {
               font-size: 20px;
               margin-left: 20px;
+            }
+          }
+        }
+      }
+    }
+    .contentApp {
+      width: 100%;
+      min-height: 200vh;
+      // position: relative;
+      .home {
+        // z-index: -1;
+        width: 100%;
+        // position: absolute;
+        // top: 60px;
+        left: 0;
+        &-backdrop {
+          width: 100%;
+          height: 40vh;
+          background-image: linear-gradient(
+              to right,
+              var(--BGC-backdrop-gradient1),
+              var(--BGC-backdrop-gradient2)
+            ),
+            url("./images/film.jpg");
+          background-position: center;
+          background-color: var(--BGC-header);
+          background-repeat: no-repeat;
+          background-size: cover;
+          &-search {
+            border-radius: 40px;
+            position: absolute;
+            margin: 5px 4%;
+            width: 92%;
+            top: 30vh;
+            background-color: #fff;
+            font-size: 20px;
+            input {
+              border-radius: 40px;
+              font-size: 20px;
+              width: 80%;
+              border: none;
+              outline: none;
+              padding: 15px 30px;
+            }
+            button {
+              font-size: 20px;
+              padding: 15px 30px;
+              color: white;
+              background-color: var(--BGC-button);
+              // width: 10%;
+              border: none;
+              border-radius: 40px;
+              outline: none;
+              float: right;
             }
           }
         }

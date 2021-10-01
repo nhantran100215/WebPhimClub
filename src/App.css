@@ -5,6 +5,9 @@
 
 :root {
   --BGC-header: #032541;
+  --BGC-backdrop-gradient1: #033654d7;
+  --BGC-backdrop-gradient2: #017aa3c7;
+  --BGC-button: #13c9bf;
   --posi-header-bar: 0;
 }
 
@@ -19,7 +22,6 @@ body {
 
 #root .app {
   width: 100%;
-  height: 200vh;
   position: relative;
 }
 #root .app .header {
@@ -171,6 +173,50 @@ body {
 #root .app .header-search-result-items .text {
   font-size: 20px;
   margin-left: 20px;
+}
+#root .app .contentApp {
+  width: 100%;
+  min-height: 200vh;
+}
+#root .app .contentApp .home {
+  width: 100%;
+  left: 0;
+}
+#root .app .contentApp .home-backdrop {
+  width: 100%;
+  height: 40vh;
+  background-image: linear-gradient(to right, var(--BGC-backdrop-gradient1), var(--BGC-backdrop-gradient2)), url("./images/film.jpg");
+  background-position: center;
+  background-color: var(--BGC-header);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#root .app .contentApp .home-backdrop-search {
+  border-radius: 40px;
+  position: absolute;
+  margin: 5px 4%;
+  width: 92%;
+  top: 30vh;
+  background-color: #fff;
+  font-size: 20px;
+}
+#root .app .contentApp .home-backdrop-search input {
+  border-radius: 40px;
+  font-size: 20px;
+  width: 80%;
+  border: none;
+  outline: none;
+  padding: 15px 30px;
+}
+#root .app .contentApp .home-backdrop-search button {
+  font-size: 20px;
+  padding: 15px 30px;
+  color: white;
+  background-color: var(--BGC-button);
+  border: none;
+  border-radius: 40px;
+  outline: none;
+  float: right;
 }
 
 .link-decoration {
