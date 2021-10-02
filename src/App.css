@@ -177,6 +177,8 @@ body {
 #root .app .contentApp {
   width: 100%;
   min-height: 200vh;
+  position: absolute;
+  z-index: -1;
 }
 #root .app .contentApp .home {
   width: 100%;
@@ -184,12 +186,22 @@ body {
 }
 #root .app .contentApp .home-backdrop {
   width: 100%;
-  height: 40vh;
+  height: 50vh;
   background-image: linear-gradient(to right, var(--BGC-backdrop-gradient1), var(--BGC-backdrop-gradient2)), url("./images/film.jpg");
   background-position: center;
   background-color: var(--BGC-header);
   background-repeat: no-repeat;
   background-size: cover;
+}
+#root .app .contentApp .home-backdrop-header {
+  position: absolute;
+  top: 14vh;
+  margin-left: 30px;
+  color: white;
+  font-size: 30px;
+}
+#root .app .contentApp .home-backdrop-header h2 {
+  font-size: 20px;
 }
 #root .app .contentApp .home-backdrop-search {
   border-radius: 40px;
@@ -217,6 +229,52 @@ body {
   border-radius: 40px;
   outline: none;
   float: right;
+}
+#root .app .contentApp .home-popular {
+  width: 100%;
+  padding: 20px;
+}
+#root .app .contentApp .home-popular h2 {
+  font-size: 25px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+#root .app .contentApp .home-popular-display {
+  margin-left: 10px;
+  display: flex;
+  overflow: scroll;
+  overflow-y: hidden;
+}
+#root .app .contentApp .home-popular-display div:not(:first-child) {
+  margin-left: 20px;
+}
+
+.movieBanner {
+  background-image: url("./images/bgcOfBanalMovie1.jpg");
+  background-size: cover;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+.movieBanner img {
+  width: 170px;
+  border-radius: 10px;
+  height: 250px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.movieBanner h4 {
+  padding: 0 10px;
+  margin-top: 10px;
+  font-weight: 800;
+}
+.movieBanner h5 {
+  padding: 0 10px;
+  margin-top: auto;
+  margin-bottom: 10px;
+  font-weight: 100;
 }
 
 .link-decoration {
