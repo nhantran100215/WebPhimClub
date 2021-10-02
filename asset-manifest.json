@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/WebPhimClub/static/css/main.d1ac072e.chunk.css",
-    "main.js": "/WebPhimClub/static/js/main.ea9945a3.chunk.js",
-    "main.js.map": "/WebPhimClub/static/js/main.ea9945a3.chunk.js.map",
+    "main.js": "/WebPhimClub/static/js/main.449ea8df.chunk.js",
+    "main.js.map": "/WebPhimClub/static/js/main.449ea8df.chunk.js.map",
     "runtime-main.js": "/WebPhimClub/static/js/runtime-main.7b581814.js",
     "runtime-main.js.map": "/WebPhimClub/static/js/runtime-main.7b581814.js.map",
     "static/js/2.3efcccd6.chunk.js": "/WebPhimClub/static/js/2.3efcccd6.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.7b581814.js",
     "static/js/2.3efcccd6.chunk.js",
     "static/css/main.d1ac072e.chunk.css",
-    "static/js/main.ea9945a3.chunk.js"
+    "static/js/main.449ea8df.chunk.js"
   ]
 }
