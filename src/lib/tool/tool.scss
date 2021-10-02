@@ -1,0 +1,88 @@
+.circleProgressBar {
+  --width: 40px;
+  --height: 40px;
+  --border-width: 3px;
+  --border-color: yellow;
+  --font-size: 15px;
+  --BGC: black;
+  --color: white;
+  --percent: "80deg";
+  --width-outermost: 15%;
+  width: var(--width);
+  height: var(--height);
+  position: relative;
+  &-outside {
+    width: var(--width);
+    height: var(--height);
+    background-color: var(--BGC);
+    color: var(--color);
+    font-size: var(--font-size);
+    border-radius: 50%;
+    &-left {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      clip: rect(0, calc(var(--width) / 2), var(--width), 0);
+      &-run {
+        margin: 0px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        clip: rect(0, var(--width), var(--width), calc(var(--width) / 2));
+        // transform: rotate(90deg);
+        &::after {
+          content: "";
+          width: calc(
+            var(--width) - var(--border-width) - var(--width-outermost)
+          );
+          height: calc(100% - var(--border-width) - var(--width-outermost));
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border: var(--border-width) solid var(--border-color);
+          border-radius: 50%;
+        }
+      }
+    }
+
+    &-right {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      clip: rect(0, var(--width), var(--width), calc(var(--width) / 2));
+      &-run {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        // top: 50%;
+        // left: 50%;
+        // transform: translate(-50%, -50%);
+        border-radius: 50%;
+        clip: rect(0, calc((var(--width)) / 2), var(--width), 0);
+        &::after {
+          content: "";
+          width: calc(
+            var(--width) - var(--border-width) - var(--width-outermost)
+          );
+          height: calc(100% - var(--border-width) - var(--width-outermost));
+          position: absolute;
+          border: var(--border-width) solid var(--border-color);
+          border-radius: 50%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+  &-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    color: var(--color);
+    font-size: var(--font-size);
+  }
+}

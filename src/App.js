@@ -14,8 +14,8 @@ import {
   AiOutlineSearch,
   AiOutlineClose,
 } from "react-icons/ai";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 // import { BsCollectionPlayFill } from "react-icons/bs";
-import { Home, Collection, FAQ } from "./contentApp";
 ///////////////////////////////////////////////////import library function
 import {
   BrowserRouter as Router,
@@ -26,6 +26,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import film_collection from "./filmCollection.json";
+import { Home, Collection, FAQ } from "./contentApp";
 
 // D:\my work\web dev\javascript\reactjs\My_project\offline\WebPhimClub\public\icon_head.png
 const kindOfLink = {
@@ -364,7 +365,7 @@ export default class App extends Component {
           break;
 
         case kindOfLink.toprated:
-          console.log(datafet);
+          // console.log(datafet);
           let toprated1 = [];
           datafet.results.forEach((e) => {
             // console.log(e);
@@ -435,7 +436,7 @@ export default class App extends Component {
             toprated1[toprated1.length] = movie;
           });
           this.setState({ toprated: toprated1 });
-          console.log(this.state.toprated);
+          // console.log(this.state.toprated);
           break;
         default:
           break;
@@ -444,13 +445,17 @@ export default class App extends Component {
   };
 
   render() {
+    let { upcoming, popular, trending } = this.state;
+    // console.log(upcoming);
     return (
       <div className="app">
         <Router>
           <HeaderApp />
-          <ContentApp popular={this.state.popular} />
+          <div>
+            <ContentApp trending={trending} popular={popular} />
+          </div>
+          <FooterApp />
         </Router>
-        {/* <FooterApp /> */}
       </div>
     );
   }
@@ -555,19 +560,28 @@ class HeaderApp extends Component {
         <div className="header-bar">
           <div className="">
             <Link
-              to="/"
+              to="/webFilmClub/"
               name="home"
               className="header-bar-link link-decoration"
             >
               <img src={Logo} alt="logo web" className="home"></img>
             </Link>
-            <Link to="/movie" className="header-bar-link link-decoration">
+            <Link
+              to="/webFilmClub/movie"
+              className="header-bar-link link-decoration"
+            >
               <span className="header-bar-text ">Movie</span>
             </Link>
-            <Link to="/collection" className="header-bar-link link-decoration">
+            <Link
+              to="/webFilmClub/collection"
+              className="header-bar-link link-decoration"
+            >
               <span className="header-bar-text ">Collection</span>
             </Link>
-            <Link to="/FAQ" className="header-bar-link link-decoration">
+            <Link
+              to="/webFilmClub/FAQ"
+              className="header-bar-link link-decoration"
+            >
               <span className="header-bar-text">FAQ</span>
             </Link>
           </div>
@@ -686,13 +700,13 @@ class ContentApp extends Component {
     return (
       <div className="contentApp">
         <Switch>
-          <Route exact path="/">
-            <Home popular={this.props.popular} />
+          <Route exact path="/webFilmClub/">
+            <Home popular={this.props.popular} trending={this.props.trending} />
           </Route>
-          <Route path="/collection">
+          <Route path="/webFilmClub/collection">
             <Collection />
           </Route>
-          <Route path="FAQ">
+          <Route path="/webFilmClub/FAQ">
             <FAQ />
           </Route>
         </Switch>
@@ -700,3 +714,21 @@ class ContentApp extends Component {
     );
   }
 }
+
+////////////////////////////////////footer///////////////////////////////////////////////////////
+const FooterApp = () => {
+  return (
+    <div className="footer">
+      <div className="text">
+        <h4>My Film CLub</h4>
+      </div>
+      <div className="icon">
+        {/* <IconContext.Provider value={{ backgroungColor: "#61dbfb" }}> */}
+        <FaGithub className="react-icons" />
+        <FaTwitter className="react-icons" />
+        <FaLinkedin className="react-icons" />
+        {/* </IconContext.Provider> */}
+      </div>
+    </div>
+  );
+};

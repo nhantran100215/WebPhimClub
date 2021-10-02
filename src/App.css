@@ -22,6 +22,7 @@ body {
 
 #root .app {
   width: 100%;
+  height: 100%;
   position: relative;
 }
 #root .app .header {
@@ -29,6 +30,7 @@ body {
   position: fixed;
   width: 100%;
   transition: 0.25s ease-in-out;
+  z-index: 2;
 }
 #root .app .header-bar {
   display: flex;
@@ -177,7 +179,6 @@ body {
 #root .app .contentApp {
   width: 100%;
   min-height: 200vh;
-  position: absolute;
   z-index: -1;
 }
 #root .app .contentApp .home {
@@ -202,6 +203,7 @@ body {
 }
 #root .app .contentApp .home-backdrop-header h2 {
   font-size: 20px;
+  margin-top: 20px;
 }
 #root .app .contentApp .home-backdrop-search {
   border-radius: 40px;
@@ -232,7 +234,7 @@ body {
 }
 #root .app .contentApp .home-popular {
   width: 100%;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 }
 #root .app .contentApp .home-popular h2 {
   font-size: 25px;
@@ -241,14 +243,63 @@ body {
   margin-left: 10px;
   margin-bottom: 10px;
 }
+#root .app .contentApp .home-popular-header {
+  display: flex;
+}
+#root .app .contentApp .home-popular-header-toggle {
+  position: relative;
+  height: 100%;
+  display: flex;
+  margin: 8px 30px;
+  font-weight: 700;
+  border-radius: 20px;
+  border: 1px solid var(--BGC-header);
+}
+#root .app .contentApp .home-popular-header-toggle .bythetime {
+  padding: 7px 20px;
+  border-radius: 20px;
+}
+#root .app .contentApp .home-popular-header-toggle .cover {
+  position: absolute;
+  width: 82px;
+  height: 100%;
+  background-color: var(--BGC-header);
+  top: 0;
+  border-radius: 20px;
+  z-index: -1;
+  transition: 0.5s ease-out;
+}
 #root .app .contentApp .home-popular-display {
+  margin-bottom: 20px;
   margin-left: 10px;
   display: flex;
   overflow: scroll;
   overflow-y: hidden;
 }
-#root .app .contentApp .home-popular-display div:not(:first-child) {
+#root .app .contentApp .home-popular-display .movieBanner:not(:first-child) {
   margin-left: 20px;
+}
+#root .app .contentApp .home-popular-display .movieBanner {
+  margin-bottom: 20px;
+}
+#root .app .footer {
+  background-color: var(--BGC-header);
+  background-image: linear-gradient(to right, var(--BGC-header), var(--BGC-button));
+  height: 20vh;
+  text-align: center;
+}
+#root .app .footer .text {
+  font-size: 30px;
+  padding: 20px;
+}
+#root .app .footer .icon {
+  display: flex;
+  justify-content: space-around;
+}
+#root .app .footer .icon .react-icons {
+  vertical-align: middle;
+  color: var(--head-color);
+  font-size: 40px;
 }
 
 .movieBanner {
@@ -257,6 +308,12 @@ body {
   border-radius: 10px 10px 0 0;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+.movieBanner a:active,
+.movieBanner a:visited,
+.movieBanner a {
+  color: black;
 }
 .movieBanner img {
   width: 170px;
@@ -265,20 +322,63 @@ body {
   object-fit: cover;
   flex-shrink: 0;
 }
-.movieBanner h4 {
-  padding: 0 10px;
-  margin-top: 10px;
-  font-weight: 800;
+.movieBanner-title {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }
-.movieBanner h5 {
+.movieBanner-title h4 {
   padding: 0 10px;
+  height: 50px;
+  display: inline-block;
+  flex-shrink: 0;
+  font-weight: 800;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+.movieBanner-title h5 {
+  padding: 0 10px;
+  width: 100%;
+  flex: 1;
   margin-top: auto;
+  position: absolute;
+  bottom: 0;
   margin-bottom: 10px;
   font-weight: 100;
 }
 
+.wrap-circleProcessBar {
+  position: absolute;
+  top: 230px;
+  left: 20px;
+}
+
 .link-decoration {
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.devide {
+  width: 100%;
+  height: 3px;
+  background-color: var(--BGC-header);
 }
 
 /*# sourceMappingURL=App.css.map */
