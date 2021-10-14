@@ -9,3 +9,14 @@ constructure:
 	-nowplaying
 	-toprated_arr
 	-search_arr
+
+	const sortValue = [
+  "Popularity Descending",
+  "Popularity Ascending",
+  "Rating Descending",
+  "Rating Ascending",
+  "Release Year Descending",
+  "Release Year Ascending",
+  "Title(A-Z)",
+  "Title(z-A)",
+];

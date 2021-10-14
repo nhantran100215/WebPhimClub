@@ -26,7 +26,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import film_collection from "./filmCollection.json";
-import { Home, Collection, FAQ } from "./contentApp";
+import { Home, Collection, FAQ, Movie, Film } from "./contentApp";
 
 // D:\my work\web dev\javascript\reactjs\My_project\offline\WebPhimClub\public\icon_head.png
 const kindOfLink = {
@@ -37,6 +37,7 @@ const kindOfLink = {
   upcoming: "upcoming",
   toprated: "toprated",
   base_img_link: "https://image.tmdb.org/t/p/w500", //w500
+  genres: "genres",
 };
 export const concateString = (kind, id, time) => {
   const api_key = "d1ac13b85f1d54e58edbe4543ffee597";
@@ -55,6 +56,8 @@ export const concateString = (kind, id, time) => {
       return `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1`;
     case kindOfLink.toprated:
       return `https://api.themoviedb.org/3/movie/top_rated?api_key=${api_key}&language=en-US&page=1`;
+    case kindOfLink.genres:
+      return `https://api.themoviedb.org/3/genre/movie/list?api_key=${api_key}&language=en-US`;
     default:
       break;
   }
@@ -64,7 +67,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movie: [],
+      movies: [],
       trending: {
         day: [],
         week: [],
@@ -74,8 +77,10 @@ export default class App extends Component {
       nowplaying: [],
       toprated: [],
       search: [],
-      genres: [],
+      genres: {},
       genre_ids: [],
+      release_year: [],
+      display_film: {},
     };
   }
   componentDidMount() {
@@ -88,6 +93,7 @@ export default class App extends Component {
     this.getAPIMovieArr(kindOfLink.popular);
     this.getAPIMovieArr(kindOfLink.upcoming);
     this.getAPIMovieArr(kindOfLink.toprated);
+    this.getAPIMovieArr(kindOfLink.genres);
   }
 
   getAPIMovieArr = async (kind, id, time) => {
@@ -98,64 +104,59 @@ export default class App extends Component {
       // console.log(datafet);
       switch (kind) {
         case kindOfLink.collection:
-          let { movie } = this.state;
-          for (let film of datafet.parts) {
-            let {
-              id,
-              title,
-              original_title,
-              adult,
-              release_date,
-              poster_path,
-              backdrop_path,
-              overview,
-              vote_average,
-              vote_count,
-              original_language,
-            } = film;
-            poster_path = kindOfLink.base_img_link + poster_path;
-            backdrop_path = kindOfLink.base_img_link + backdrop_path;
-            movie[movie.length] = {
-              id,
-              title,
-              original_title,
-              adult,
-              release_date,
-              poster_path,
-              backdrop_path,
-              overview,
-              vote_average,
-              vote_count,
-              original_language,
-            };
+          {
+            let { movies, release_year } = this.state;
+            for (let film of datafet.parts) {
+              let {
+                id,
+                title,
+                original_title,
+                adult,
+                release_date,
+                poster_path,
+                backdrop_path,
+                overview,
+                vote_average,
+                vote_count,
+                original_language,
+                popularity,
+                genre_ids,
+              } = film;
+              poster_path = kindOfLink.base_img_link + poster_path;
+              backdrop_path = kindOfLink.base_img_link + backdrop_path;
+              movies[movies.length] = {
+                id,
+                title,
+                original_title,
+                adult,
+                release_date,
+                poster_path,
+                backdrop_path,
+                overview,
+                vote_average,
+                vote_count,
+                original_language,
+                popularity,
+                genre_ids,
+              };
+              if (!release_year.includes(release_date.slice(0, 4)))
+                release_year[release_year.length] = release_date.slice(0, 4);
+              // console.log(release_date);
+              // console.log(release_date.slice(0, 4));
+            }
+            this.setState({ movies: movies, release_year: release_year });
+            // console.log(this.state.movie);
           }
-          this.setState({ movie: movie });
-          // console.log(this.state.movie);
           break;
         case kindOfLink.trending:
-          // console.log(datafet.results);
-          let trending1 = [];
-          datafet.results.forEach((e) => {
-            // console.log(e);
-            let movie = {};
-            let {
-              overview,
-              vote_count,
-              media_type,
-              id,
-              poster_path,
-              genre_ids,
-              vote_average,
-              backdrop_path,
-            } = e;
-            poster_path = kindOfLink.base_img_link + poster_path;
-            backdrop_path = kindOfLink.base_img_link + backdrop_path;
-            if (media_type === "tv") {
-              let { name, original_name, first_air_date } = e;
-              let title = name,
-                original_title = original_name,
-                release_date = first_air_date;
-              movie = {
+          {
+            // console.log(datafet.results);
+            let trending1 = [];
+            let { movies, release_year } = this.state;
+            datafet.results.forEach((e) => {
+              // console.log(e);
+              let movie = {};
+              let {
                 overview,
                 vote_count,
                 media_type,
@@ -164,72 +165,86 @@ export default class App extends Component {
                 genre_ids,
                 vote_average,
                 backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === "movie") {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            trending1[trending1.length] = movie;
-          });
-          let { trending } = this.state;
-          if (time === "day") trending.day = trending1;
-          if (time === "week") trending.week = trending1;
-          this.setState({ trending });
-          // console.log(trending1);
-          // console.log(this.state);
-          // console.log(url);
+                popularity,
+              } = e;
+              poster_path = kindOfLink.base_img_link + poster_path;
+              backdrop_path = kindOfLink.base_img_link + backdrop_path;
+              if (media_type === "tv") {
+                let { name, original_name, first_air_date } = e;
+                let title = name,
+                  original_title = original_name,
+                  release_date = first_air_date;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === "movie") {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              trending1[trending1.length] = movie;
+              let check_movie_again = false;
+              movies.forEach((e) => {
+                // console.log(movie.id);
+                if (e.id === movie.id) {
+                  check_movie_again = true;
+                }
+              });
+              if (!check_movie_again) {
+                movies.unshift(movie);
+                check_movie_again = false;
+              }
+              if (!release_year.includes(movie.release_date.slice(0, 4)))
+                release_year[release_year.length] = movie.release_date.slice(
+                  0,
+                  4
+                );
+            });
+
+            // console.log(movies);
+            let { trending } = this.state;
+            if (time === "day") trending.day = trending1;
+            if (time === "week") trending.week = trending1;
+            this.setState({ trending, movies, release_year });
+            // console.log(trending1);
+            // console.log(this.state);
+            // console.log(url);
+          }
           break;
 
         case kindOfLink.popular:
-          // console.log(datafet);
-          let popular1 = [];
-          datafet.results.forEach((e) => {
-            // console.log(e);
-            let movie = {};
-            let {
-              overview,
-              vote_count,
-              media_type,
-              id,
-              poster_path,
-              genre_ids,
-              vote_average,
-              backdrop_path,
-            } = e;
-            poster_path = kindOfLink.base_img_link + poster_path;
-            backdrop_path = kindOfLink.base_img_link + backdrop_path;
-            // console.log(
-            //   overview,
-            //   vote_count,
-            //   media_type,
-            //   id,
-            //   poster_path,
-            //   genre_ids,
-            //   vote_average,
-            //   backdrop_path
-            // );
-            if (media_type === "tv") {
-              let { name, original_name, first_air_date } = e;
-              let title = name,
-                original_title = original_name,
-                release_date = first_air_date;
-              movie = {
+          {
+            // console.log(datafet);
+            let popular1 = [];
+            let { movies, release_year } = this.state;
+            datafet.results.forEach((e) => {
+              // console.log(e);
+              let movie = {};
+              let {
                 overview,
                 vote_count,
                 media_type,
@@ -238,78 +253,111 @@ export default class App extends Component {
                 genre_ids,
                 vote_average,
                 backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-              console.log(movie);
-            }
-            if (media_type === "movie") {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === undefined) {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            // console.log(movie);
-            popular1[popular1.length] = movie;
-          });
-          // let { popular } = this.state;
-          // if (time === "day") popular.day = popular1;
-          // if (time === "week") popular.week = popular1;
-          this.setState({ popular: popular1 });
-          // console.log(this.state.popular);
+                popularity,
+              } = e;
+              poster_path = kindOfLink.base_img_link + poster_path;
+              backdrop_path = kindOfLink.base_img_link + backdrop_path;
+              // console.log(
+              //   overview,
+              //   vote_count,
+              //   media_type,
+              //   id,
+              //   poster_path,
+              //   genre_ids,
+              //   vote_average,
+              //   backdrop_path
+              // );
+              if (media_type === "tv") {
+                let { name, original_name, first_air_date } = e;
+                let title = name,
+                  original_title = original_name,
+                  release_date = first_air_date;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+                console.log(movie);
+              }
+              if (media_type === "movie") {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === undefined) {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              // console.log(movie);
+              popular1[popular1.length] = movie;
+              let check_movie_again = false;
+              movies.forEach((e) => {
+                // console.log(movie.id);
+                if (e.id === movie.id) {
+                  check_movie_again = true;
+                }
+              });
+              if (!check_movie_again) {
+                movies.unshift(movie);
+                check_movie_again = false;
+              }
+              if (!release_year.includes(movie.release_date.slice(0, 4)))
+                release_year[release_year.length] = movie.release_date.slice(
+                  0,
+                  4
+                );
+            });
+            // let { popular } = this.state;
+            // if (time === "day") popular.day = popular1;
+            // if (time === "week") popular.week = popular1;
+            this.setState({ popular: popular1, movies: movies, release_year });
+            // console.log(this.state.popular);
+          }
           break;
 
         case kindOfLink.upcoming:
-          // console.log(datafet);
-          let upcoming1 = [];
-          datafet.results.forEach((e) => {
-            // console.log(e);
-            let movie = {};
-            let {
-              overview,
-              vote_count,
-              media_type,
-              id,
-              poster_path,
-              genre_ids,
-              vote_average,
-              backdrop_path,
-            } = e;
-            poster_path = kindOfLink.base_img_link + poster_path;
-            backdrop_path = kindOfLink.base_img_link + backdrop_path;
-            if (media_type === "tv") {
-              let { name, original_name, first_air_date } = e;
-              let title = name,
-                original_title = original_name,
-                release_date = first_air_date;
-              movie = {
+          {
+            // console.log(datafet);
+            let upcoming1 = [];
+            let { movies, release_year } = this.state;
+            datafet.results.forEach((e) => {
+              // console.log(e);
+              let movie = {};
+              let {
                 overview,
                 vote_count,
                 media_type,
@@ -318,141 +366,246 @@ export default class App extends Component {
                 genre_ids,
                 vote_average,
                 backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === "movie") {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === undefined) {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            upcoming1[upcoming1.length] = movie;
-          });
-          // let { popular } = this.state;
-          // if (time === "day") popular.day = popular1;
-          // if (time === "week") popular.week = popular1;
-          this.setState({ upcoming: upcoming1 });
-          // console.log(this.state.upcoming);
+                popularity,
+              } = e;
+              poster_path = kindOfLink.base_img_link + poster_path;
+              backdrop_path = kindOfLink.base_img_link + backdrop_path;
+              if (media_type === "tv") {
+                let { name, original_name, first_air_date } = e;
+                let title = name,
+                  original_title = original_name,
+                  release_date = first_air_date;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === "movie") {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === undefined) {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              upcoming1[upcoming1.length] = movie;
+              let check_movie_again = false;
+              movies.forEach((e) => {
+                // console.log(movie.id);
+                if (e.id === movie.id) {
+                  check_movie_again = true;
+                }
+              });
+              if (!check_movie_again) {
+                movies.unshift(movie);
+                check_movie_again = false;
+              }
+              if (!release_year.includes(movie.release_date.slice(0, 4)))
+                release_year[release_year.length] = movie.release_date.slice(
+                  0,
+                  4
+                );
+            });
+            // let { popular } = this.state;
+            // if (time === "day") popular.day = popular1;
+            // if (time === "week") popular.week = popular1;
+            this.setState({
+              upcoming: upcoming1,
+              movies: movies,
+              release_year,
+            });
+            // console.log(this.state.upcoming);
+          }
           break;
 
         case kindOfLink.toprated:
+          {
+            // console.log(datafet);
+            let toprated1 = [];
+            let { movies, release_year } = this.state;
+            datafet.results.forEach((e) => {
+              // console.log(e);
+              let movie = {};
+              let {
+                overview,
+                vote_count,
+                media_type,
+                id,
+                poster_path,
+                genre_ids,
+                vote_average,
+                backdrop_path,
+                popularity,
+              } = e;
+              poster_path = kindOfLink.base_img_link + poster_path;
+              backdrop_path = kindOfLink.base_img_link + backdrop_path;
+              if (media_type === "tv") {
+                let { name, original_name, first_air_date } = e;
+                let title = name,
+                  original_title = original_name,
+                  release_date = first_air_date;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === "movie") {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              if (media_type === undefined) {
+                let { title, original_title, release_date } = e;
+                movie = {
+                  overview,
+                  vote_count,
+                  media_type,
+                  id,
+                  poster_path,
+                  genre_ids,
+                  vote_average,
+                  backdrop_path,
+                  title,
+                  original_title,
+                  release_date,
+                  popularity,
+                };
+              }
+              toprated1[toprated1.length] = movie;
+              let check_movie_again = false;
+              movies.forEach((e) => {
+                // console.log(movie.id);
+                if (e.id === movie.id) {
+                  check_movie_again = true;
+                }
+              });
+              if (!check_movie_again) {
+                movies.unshift(movie);
+                check_movie_again = false;
+              }
+              if (!release_year.includes(movie.release_date.slice(0, 4)))
+                release_year[release_year.length] = movie.release_date.slice(
+                  0,
+                  4
+                );
+            });
+            this.setState({
+              toprated: toprated1,
+              movies: movies,
+              release_year,
+            });
+            // console.log(this.state.toprated);
+          }
+          break;
+
+        case kindOfLink.genres:
           // console.log(datafet);
-          let toprated1 = [];
-          datafet.results.forEach((e) => {
-            // console.log(e);
-            let movie = {};
-            let {
-              overview,
-              vote_count,
-              media_type,
-              id,
-              poster_path,
-              genre_ids,
-              vote_average,
-              backdrop_path,
-            } = e;
-            poster_path = kindOfLink.base_img_link + poster_path;
-            backdrop_path = kindOfLink.base_img_link + backdrop_path;
-            if (media_type === "tv") {
-              let { name, original_name, first_air_date } = e;
-              let title = name,
-                original_title = original_name,
-                release_date = first_air_date;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === "movie") {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            if (media_type === undefined) {
-              let { title, original_title, release_date } = e;
-              movie = {
-                overview,
-                vote_count,
-                media_type,
-                id,
-                poster_path,
-                genre_ids,
-                vote_average,
-                backdrop_path,
-                title,
-                original_title,
-                release_date,
-              };
-            }
-            toprated1[toprated1.length] = movie;
+          let { genres } = this.state;
+          datafet.genres.forEach((e, i) => {
+            genres[e.id] = e.name;
           });
-          this.setState({ toprated: toprated1 });
-          // console.log(this.state.toprated);
+          // console.log("genres");
+          // console.log(movies);
+          this.setState({ genres: genres });
           break;
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleDisplayFilm = (film) => {
+    console.log("filmsdadasdada");
+    this.setState({ display_film: film });
   };
 
   render() {
-    let { upcoming, popular, trending } = this.state;
-    // console.log(upcoming);
+    let {
+      upcoming,
+      popular,
+      trending,
+      genres,
+      movies,
+      release_year,
+      display_film,
+    } = this.state;
+    // console.log(movies);
+    // console.log(genres);
     return (
       <div className="app">
         <Router>
           <HeaderApp />
           <div>
-            <ContentApp trending={trending} popular={popular} />
+            <ContentApp
+              trending={trending}
+              popular={popular}
+              genres={genres}
+              upcoming={upcoming}
+              movies={movies}
+              release_year={release_year}
+              display_film={display_film}
+              handleDisplayFilm={(el) => this.handleDisplayFilm(el)}
+            />
           </div>
           <FooterApp />
         </Router>
@@ -560,43 +713,49 @@ class HeaderApp extends Component {
         <div className="header-bar">
           <div className="">
             <Link
-              to="/webFilmClub/"
+              to="/WebPhimClub/"
               name="home"
               className="header-bar-link link-decoration"
             >
               <img src={Logo} alt="logo web" className="home"></img>
             </Link>
             <Link
-              to="/webFilmClub/movie"
+              to="/WebPhimClub/movie"
               className="header-bar-link link-decoration"
             >
-              <span className="header-bar-text ">Movie</span>
+              <span className="header-bar-text noselect">Movie</span>
             </Link>
             <Link
-              to="/webFilmClub/collection"
+              to="/WebPhimClub/collection"
               className="header-bar-link link-decoration"
             >
-              <span className="header-bar-text ">Collection</span>
+              <span className="header-bar-text noselect">Collection</span>
             </Link>
             <Link
-              to="/webFilmClub/FAQ"
+              to="/WebPhimClub/FAQ"
               className="header-bar-link link-decoration"
             >
-              <span className="header-bar-text">FAQ</span>
+              <span className="header-bar-text noselect">FAQ</span>
             </Link>
           </div>
-          <button
-            className="header-bar-search"
-            onClick={this.handleClickSearch}
-          >
-            {search_state ? (
-              <span className="header-bar-icon-back" style={{ color: "white" }}>
-                X
-              </span>
-            ) : (
-              <AiOutlineSearch className="header-bar-icon-infront" />
-            )}
-          </button>
+          <div>
+            <button className="header-bar-signin noselect">Sign In</button>
+            <button
+              className="header-bar-search"
+              onClick={this.handleClickSearch}
+            >
+              {search_state ? (
+                <span
+                  className="header-bar-icon-back"
+                  style={{ color: "white" }}
+                >
+                  X
+                </span>
+              ) : (
+                <AiOutlineSearch className="header-bar-icon-infront" />
+              )}
+            </button>
+          </div>
         </div>
         <HeaderSearchResult
           search_keyString={search_keyString}
@@ -697,16 +856,67 @@ class HeaderSearchResult extends Component {
 //////////////////////////////////////////ContentApp///////////////////////////////////////////////////
 class ContentApp extends Component {
   render() {
+    // console.log(this.props.location);
+    let { display_film } = this.props;
     return (
       <div className="contentApp">
         <Switch>
-          <Route exact path="/webFilmClub/">
+          <Route exact path="/WebPhimClub/">
             <Home popular={this.props.popular} trending={this.props.trending} />
           </Route>
-          <Route path="/webFilmClub/collection">
+          <Route
+            exact
+            path="/WebPhimClub/movie"
+            render={(props) => {
+              // console.log(props);
+              return (
+                <Movie
+                  location={props.location}
+                  history={props.history}
+                  movies={this.props.movies}
+                  genres={this.props.genres}
+                  release_year={this.props.release_year}
+                  handleDisplayFilm={(el) => this.props.handleDisplayFilm(el)}
+                />
+              );
+            }}
+          />
+          {display_film ? (
+            () => {
+              let path_temp =
+                display_film.id + "-" + display_film.title.replace(" ", "-");
+              console.log(path_temp);
+              return (
+                <Route
+                  path={"/WebPhimClub/movie" + path_temp}
+                  render={(props) => {
+                    // console.log(props);
+                    return <Film display_film={display_film} />;
+                  }}
+                />
+              );
+            }
+          ) : (
+            <div></div>
+          )}
+          {/* {this.props.movies.map((elfilm) => {
+            // console.log(elfilm);
+            let path_temp = elfilm.id + "-" + elfilm.title.replace(" ", "-");
+            // console.log(path_temp);
+            return (
+              <Route
+                path={"/WebPhimClub/movie" + path_temp}
+                render={(props) => {
+                  // console.log(props);
+                  return <Film elfilm={elfilm} />;
+                }}
+              />
+            );
+          })} */}
+          <Route path="/WebPhimClub/collection">
             <Collection />
           </Route>
-          <Route path="/webFilmClub/FAQ">
+          <Route path="/WebPhimClub/FAQ">
             <FAQ />
           </Route>
         </Switch>
