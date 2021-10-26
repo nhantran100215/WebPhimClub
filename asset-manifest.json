@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/WebPhimClub/static/css/main.2e440639.chunk.css",
-    "main.js": "/WebPhimClub/static/js/main.5b8274c4.chunk.js",
-    "main.js.map": "/WebPhimClub/static/js/main.5b8274c4.chunk.js.map",
+    "main.css": "/WebPhimClub/static/css/main.3a103009.chunk.css",
+    "main.js": "/WebPhimClub/static/js/main.55cf1a9d.chunk.js",
+    "main.js.map": "/WebPhimClub/static/js/main.55cf1a9d.chunk.js.map",
     "runtime-main.js": "/WebPhimClub/static/js/runtime-main.7b581814.js",
     "runtime-main.js.map": "/WebPhimClub/static/js/runtime-main.7b581814.js.map",
-    "static/js/2.b3757928.chunk.js": "/WebPhimClub/static/js/2.b3757928.chunk.js",
-    "static/js/2.b3757928.chunk.js.map": "/WebPhimClub/static/js/2.b3757928.chunk.js.map",
+    "static/js/2.13eebf35.chunk.js": "/WebPhimClub/static/js/2.13eebf35.chunk.js",
+    "static/js/2.13eebf35.chunk.js.map": "/WebPhimClub/static/js/2.13eebf35.chunk.js.map",
     "index.html": "/WebPhimClub/index.html",
-    "static/css/main.2e440639.chunk.css.map": "/WebPhimClub/static/css/main.2e440639.chunk.css.map",
-    "static/js/2.b3757928.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.b3757928.chunk.js.LICENSE.txt",
+    "static/css/main.3a103009.chunk.css.map": "/WebPhimClub/static/css/main.3a103009.chunk.css.map",
+    "static/js/2.13eebf35.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.13eebf35.chunk.js.LICENSE.txt",
     "static/media/App.css": "/WebPhimClub/static/media/film.6e3c5348.jpg",
     "static/media/icon.d4773499.png": "/WebPhimClub/static/media/icon.d4773499.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7b581814.js",
-    "static/js/2.b3757928.chunk.js",
-    "static/css/main.2e440639.chunk.css",
-    "static/js/main.5b8274c4.chunk.js"
+    "static/js/2.13eebf35.chunk.js",
+    "static/css/main.3a103009.chunk.css",
+    "static/js/main.55cf1a9d.chunk.js"
   ]
 }
