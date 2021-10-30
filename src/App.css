@@ -7,10 +7,14 @@
   --BGC-header: #032541;
   --BGC-backdrop-gradient1: #033654d7;
   --BGC-backdrop-gradient2: #017aa3c7;
+  --BGC-backdropFilm-gradient: rgba(0, 0, 0, 0.85);
+  --BGC-backdropFilm-gradient1: white;
   --BGC-button: #01b4e4;
   --BGC-button-hover: #032541;
   --posi-header-bar: 0;
   --width-filter: 250px;
+  --height-header: 60px;
+  --feature-text: "test";
 }
 
 body {
@@ -31,8 +35,10 @@ body {
   background-color: var(--BGC-header);
   position: fixed;
   width: 100%;
+  height: var(--height-header);
   transition: 0.25s ease-in-out;
   z-index: 2;
+  box-sizing: border-box;
 }
 #root .app .header-bar {
   display: flex;
@@ -57,12 +63,174 @@ body {
 #root .app .header-bar-text {
   padding: 5px;
 }
-#root .app .header-bar-signin {
+#root .app .header-bar-login {
   background-color: transparent;
   border: none;
   outline: none;
   color: white;
   width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-right: 5vw;
+}
+#root .app .header-bar-login-img {
+  width: 40px;
+  border-radius: 50%;
+}
+#root .app .header-bar-login-img img {
+  width: 40px;
+  object-fit: scale-down;
+  border-radius: 100%;
+}
+#root .app .header-bar-login-feature {
+  flex-direction: column;
+  background-color: #fff;
+  color: #292828;
+  box-shadow: 0 0 2px black;
+  margin: 5px 0;
+  width: 100px;
+  font-size: 18px;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  border-radius: 4px;
+}
+#root .app .header-bar-login-feature span {
+  padding: 10px;
+  display: inline-block;
+  width: 100%;
+}
+#root .app .header-bar-login-feature span:first-child {
+  border-radius: 4px 4px 0 0;
+}
+#root .app .header-bar-login-feature span:last-child {
+  border-radius: 0 0 4px 4px;
+}
+#root .app .header-bar-login-feature span:hover {
+  background-color: var(--BGC-button);
+  color: white;
+  font-weight: bold;
+}
+#root .app .header-bar-login-feature::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-top: 8px solid transparent;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid white;
+}
+#root .app .header-bar .wrap-login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#root .app .header-bar .login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: #262626;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 400px;
+}
+#root .app .header-bar .login-close {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.25s linear;
+}
+#root .app .header-bar .login-close:hover {
+  background-color: grey;
+  color: white;
+}
+#root .app .header-bar .login form {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#root .app .header-bar .login form .inputfield {
+  position: relative;
+  width: 300px;
+}
+#root .app .header-bar .login form .inputfield label {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#root .app .header-bar .login form .inputfield label span {
+  flex-shrink: 0;
+  width: 100px;
+}
+#root .app .header-bar .login form .inputfield label input {
+  width: 200px;
+  padding: 5px;
+}
+#root .app .header-bar .login form .inputfield .passvisible {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 10;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50%);
+}
+#root .app .header-bar .login form .inputfield .passvisible svg {
+  color: grey;
+}
+#root .app .header-bar .login form .login-note {
+  margin-bottom: 15px;
+  width: 100%;
+}
+#root .app .header-bar .login form .login-note div div svg {
+  font-size: 8px;
+  margin-right: 5px;
+}
+#root .app .header-bar .login form .login-note div div span {
+  font-size: 12px;
+}
+#root .app .header-bar .login form .login-control {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+#root .app .header-bar .login form .login-control button {
+  padding: 10px 25px;
+  margin: 0 5px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: #122029;
+  color: white;
+  transition: 0.25s linear;
+}
+#root .app .header-bar .login form .login-control button:hover {
+  background-color: #77706e;
 }
 #root .app .header-bar-search {
   margin-right: 30%;
@@ -185,9 +353,14 @@ body {
   font-size: 20px;
   margin-left: 20px;
 }
+#root .app .header-area {
+  width: 100%;
+  height: var(--height-header);
+  background-color: var(--BGC-header);
+}
 #root .app .contentApp {
   width: 100%;
-  min-height: 200vh;
+  min-height: 100vh;
   z-index: -1;
 }
 #root .app .contentApp .home {
@@ -205,14 +378,15 @@ body {
 }
 #root .app .contentApp .home-backdrop-header {
   position: absolute;
-  top: 14vh;
   margin-left: 30px;
   color: white;
+}
+#root .app .contentApp .home-backdrop-header h1 {
   font-size: 30px;
+  margin-top: 40px;
 }
 #root .app .contentApp .home-backdrop-header h2 {
   font-size: 20px;
-  margin-top: 20px;
 }
 #root .app .contentApp .home-backdrop-search {
   border-radius: 40px;
@@ -247,7 +421,11 @@ body {
 }
 #root .app .contentApp .home-popular {
   width: 100%;
+  min-height: 515px;
   padding: 20px 20px 0 20px;
+}
+#root .app .contentApp .home-popular:last-child {
+  padding: 20px 20px 20px 20px;
 }
 #root .app .contentApp .home-popular h2 {
   font-size: 25px;
@@ -297,10 +475,9 @@ body {
 }
 #root .app .contentApp .movie {
   display: flex;
-  margin-top: 100px;
+  margin-top: 40px;
 }
 #root .app .contentApp .movie-tool {
-  flex-shrink: 0;
   width: var(--width-filter);
   margin: 5px;
   padding: 5px;
@@ -383,11 +560,15 @@ body {
   background-color: #032541;
 }
 #root .app .contentApp .movie-display {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 100%;
+  position: relative;
+}
+#root .app .contentApp .movie-display .noresult {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
 }
 #root .app .contentApp .movie-display-pagenum {
   display: flex;
@@ -433,6 +614,429 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
+#root .app .contentApp .film-own {
+  width: 100%;
+  height: 100%;
+}
+#root .app .contentApp .film-own-intro {
+  margin: 0 20px;
+  display: flex;
+}
+#root .app .contentApp .film-own-intro .poster {
+  position: relative;
+  width: 280px;
+  height: 480px;
+  transition: 1s linear;
+}
+#root .app .contentApp .film-own-intro .poster img {
+  margin: 40px 0;
+  width: 280px;
+  height: 400px;
+  object-fit: cover;
+  top: 50%;
+  border-radius: 10px;
+}
+#root .app .contentApp .film-own-intro .poster-turnonTrailer {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 140px;
+  width: 280px;
+  height: 400px;
+  font-size: 60px;
+  color: red;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+}
+#root .app .contentApp .film-own-intro .poster-turnonTrailer-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#root .app .contentApp .film-own-intro .info {
+  margin: 40px 20px;
+  color: white;
+  letter-spacing: 0.5px;
+  word-spacing: 3px;
+}
+#root .app .contentApp .film-own-intro .info h2 {
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 35px;
+}
+#root .app .contentApp .film-own-intro .info p {
+  line-height: 25px;
+}
+#root .app .contentApp .film-own-intro .info-feature {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  margin: 10px 0;
+}
+#root .app .contentApp .film-own-intro .info-feature-item {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  border-radius: 50%;
+  position: relative;
+  transition: 0.25s linear;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(3):hover::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-bottom: 4px solid var(--BGC-header);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  position: absolute;
+  top: 100%;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(3):hover::after {
+  content: "Add to list";
+  position: absolute;
+  top: calc(100% + 4px);
+  background-color: var(--BGC-header);
+  padding: 4px;
+  font-size: 12px;
+  letter-spacing: 0.1px;
+  word-spacing: 0.5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(4):hover::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-bottom: 4px solid var(--BGC-header);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  position: absolute;
+  top: 100%;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(4):hover::after {
+  content: "Mark as favorite";
+  position: absolute;
+  top: calc(100% + 4px);
+  background-color: var(--BGC-header);
+  white-space: nowrap;
+  padding: 4px;
+  font-size: 12px;
+  letter-spacing: 0.1px;
+  word-spacing: 0.5px;
+  border-radius: 4px;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(5):hover::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-bottom: 4px solid var(--BGC-header);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  position: absolute;
+  top: 100%;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(5):hover::after {
+  content: "Add to your watchlist";
+  position: absolute;
+  top: calc(100% + 4px);
+  background-color: var(--BGC-header);
+  white-space: nowrap;
+  padding: 4px;
+  font-size: 12px;
+  letter-spacing: 0.1px;
+  word-spacing: 0.5px;
+  border-radius: 4px;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(6):hover::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-bottom: 4px solid var(--BGC-header);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  position: absolute;
+  top: 100%;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:nth-child(6):hover::after {
+  content: "Rate it";
+  position: absolute;
+  top: calc(100% + 4px);
+  background-color: var(--BGC-header);
+  white-space: nowrap;
+  padding: 4px;
+  font-size: 12px;
+  letter-spacing: 0.1px;
+  word-spacing: 0.5px;
+  border-radius: 4px;
+}
+#root .app .contentApp .film-own-intro .info-feature-item:not(:nth-child(2)) {
+  background-color: var(--BGC-header);
+}
+#root .app .contentApp .film-own-intro .info-overview {
+  margin-bottom: 10px;
+}
+#root .app .contentApp .film-own-intro .trailer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#root .app .contentApp .film-own-intro .trailer-videos {
+  position: absolute;
+  margin: 0 10vw;
+  width: 80vw;
+  height: 100vh;
+  background-color: black;
+}
+#root .app .contentApp .film-own-intro .trailer-videos-head {
+  width: 1080px;
+  background-color: black;
+  height: 5vh;
+  color: white;
+}
+#root .app .contentApp .film-own-intro .trailer-videos-head h2 {
+  padding: 10px;
+  font-size: 25px;
+}
+#root .app .contentApp .film-own-intro .trailer-videos-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 4px;
+  color: white;
+  z-index: 10;
+}
+#root .app .contentApp .film-own-intro .trailer-videos-close:hover {
+  background-color: grey;
+}
+#root .app .contentApp .film-own-intro .trailer-videos iframe {
+  width: 80vw;
+  height: 95vh;
+}
+#root .app .contentApp .film-trailer {
+  width: 80%;
+  height: 500px;
+}
+#root .app .contentApp .film .film-recommend-title {
+  margin-top: 40px;
+  margin-left: 30px;
+  font-size: 30px;
+  text-shadow: 2px 2px grey;
+  font-weight: bold;
+}
+#root .app .contentApp .film-recommend {
+  margin-top: 40px;
+  margin-bottom: 80px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+#root .app .contentApp .film-recommend div:first-child {
+  display: flex;
+}
+#root .app .contentApp .film-recommend div:first-child .movieBannerH {
+  margin-bottom: 30px;
+}
+#root .app .contentApp .search {
+  --width-tool: 250px;
+  --width-display: calc(100% - 40px - var(--width-tool));
+  --width-poster: 200px;
+  --height-poster: 300px;
+  --bgc-select-hover: rgba(0, 0, 0, 0.1);
+  --mar-tool-ver: 15px;
+  --mar-tool-hor: 10px;
+  --mar-display-ver: 0;
+  --mar-display-hor: 10px;
+  margin: 40px 0;
+  display: flex;
+}
+#root .app .contentApp .search .tool {
+  width: var(--width-tool);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: var(--mar-tool-ver) var(--mar-display-hor);
+}
+#root .app .contentApp .search .tool-sort {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 5px black;
+}
+#root .app .contentApp .search .tool-sort-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  font-size: 20px;
+}
+#root .app .contentApp .search .tool-sort-content label {
+  font-size: 20px;
+  padding: 15px;
+  display: inline-block;
+  width: 100%;
+}
+#root .app .contentApp .search .tool-sort-content label select {
+  cursor: pointer;
+  display: block;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 96%;
+  outline: none;
+}
+#root .app .contentApp .search .tool-sort-content label select:hover {
+  background-color: var(--bgc-select-hover);
+}
+#root .app .contentApp .search .tool-filter {
+  width: 100%;
+  box-shadow: 0 0 5px black;
+  margin: 20px 0;
+  border-radius: 10px;
+  font-size: 20px;
+}
+#root .app .contentApp .search .tool-filter-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+#root .app .contentApp .search .tool-filter-content label {
+  display: inline-block;
+  padding: 15px;
+  width: 100%;
+}
+#root .app .contentApp .search .tool-filter-content label div {
+  font-size: 18px;
+  padding: 7px;
+  border-radius: 4px;
+  box-shadow: 0 0 2px black;
+  margin: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+#root .app .contentApp .search .tool-filter-content label .genres:hover {
+  background-color: var(--bgc-select-hover);
+}
+#root .app .contentApp .search .tool-filter-content label select {
+  display: block;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 10px;
+  width: 96%;
+  outline: none;
+  cursor: pointer;
+}
+#root .app .contentApp .search .tool-filter-content label select:hover {
+  background-color: var(--bgc-select-hover);
+}
+#root .app .contentApp .search .tool-filter-content button {
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  border-radius: 0 0 10px 10px;
+  border: none;
+  outline: none;
+  background-color: var(--BGC-button);
+  font-size: 20px;
+  color: white;
+}
+#root .app .contentApp .search .tool-filter-content button:hover {
+  background-color: var(--BGC-button-hover);
+}
+#root .app .contentApp .search .display {
+  width: var(--width-display);
+  margin: var(--mar-display-ver) var(--mar-display-hor);
+  position: relative;
+}
+#root .app .contentApp .search .display-movies {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+}
+#root .app .contentApp .search .display-movies-film {
+  display: flex;
+  margin: 15px 0;
+  justify-content: space-between;
+  width: 100%;
+  border-radius: 10px;
+}
+#root .app .contentApp .search .display-movies-film .poster {
+  width: var(--width-poster);
+  height: var(--height-poster);
+}
+#root .app .contentApp .search .display-movies-film .poster img {
+  width: var(--width-poster);
+  height: var(--height-poster);
+  border-radius: 10px;
+  box-shadow: 0 0 2px black;
+}
+#root .app .contentApp .search .display-movies-film .intro {
+  width: calc(100% - var(--width-poster));
+  padding: 10px;
+  line-height: 1.5;
+  color: white;
+  overflow: hidden;
+}
+#root .app .contentApp .search .display-movies-film .intro h3 {
+  font-size: 20px;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+#root .app .contentApp .search .display-movies-film .intro h4 {
+  display: inline-block;
+}
+#root .app .contentApp .search .display-movies-film .intro .overview {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: wrap;
+}
+#root .app .contentApp .search .display-movies-film .intro div {
+  margin-bottom: 5px;
+}
+#root .app .contentApp .search .display-movies .display-page {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#root .app .contentApp .search .display-movies .display-page button {
+  width: 300px;
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 40px;
+  border: none;
+  outline: none;
+  background-color: var(--BGC-button);
+}
+#root .app .contentApp .search .display-movies .display-page button:hover {
+  background-color: var(--BGC-button-hover);
+  color: white;
+}
+#root .app .contentApp .search .display-noresult {
+  position: absolute;
+  top: 100%;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
 #root .app .footer {
   background-color: var(--BGC-header);
   background-image: linear-gradient(to right, var(--BGC-header), var(--BGC-button));
@@ -470,6 +1074,10 @@ body {
 }
 .movieBanner-image {
   position: relative;
+  width: 170px;
+  border-radius: 10px;
+  height: 250px;
+  box-shadow: 0 0 2px black;
 }
 .movieBanner-image img {
   width: 170px;
@@ -515,8 +1123,9 @@ body {
   flex-direction: column;
   position: relative;
   width: 170px;
+  height: 350px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.493);
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   margin-left: 10px;
 }
 .movieBannerH a:active,
@@ -526,6 +1135,10 @@ body {
 }
 .movieBannerH-image {
   position: relative;
+  width: 170px;
+  border-radius: 10px;
+  height: 250px;
+  box-shadow: 0 0 2px black;
 }
 .movieBannerH-image img {
   width: 170px;
@@ -598,8 +1211,7 @@ body {
 
 .devide {
   width: 100%;
-  height: 3px;
-  background-color: var(--BGC-header);
+  border-bottom: 1px solid grey;
 }
 
 .noselect {
@@ -618,6 +1230,17 @@ body {
                supported by Chrome, Edge, Opera and Firefox */
 }
 
+@media only screen and (max-width: 830px) {
+  #root .app .contentApp .search {
+    flex-direction: column;
+  }
+  #root .app .contentApp .search .tool {
+    width: calc(100% - var(--mar-tool-hor) - 5px);
+  }
+  #root .app .contentApp .search .display {
+    width: calc(100% - var(--mar-display-hor));
+  }
+}
 @media only screen and (max-width: 789px) {
   .col-6 {
     width: 45%;

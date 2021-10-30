@@ -20,3 +20,19 @@ constructure:
   "Title(A-Z)",
   "Title(z-A)",
 ];
+
+http://api.themoviedb.org/3/movie/157336/videos?api_key=###
+https://www.youtube.com/watch?v=
+
+
+ trending={trending}
+            search={search}
+            movies={movies}
+            controlSignin={(el) => this.controlSignin(el)}
+            accessAccount={(user, pass) => this.accessAccount(user, pass)}
+            resetloggInCounter={() => this.resetloggInCounter()}
+  v          control_signin={control_signin}
+ #           loggin={loggin}
+ v           countloggin={countloggin}
+ v           loggin_timecounter={loggin_timecounter}
+ #           passvisible={passvisible}

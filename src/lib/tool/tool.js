@@ -38,7 +38,7 @@ export class CircleProcessBar extends Component {
     let border_color =
       percent < 34 ? "red" : percent < 67 ? "yellow" : "#20bd6f";
     return (
-      <div className="circleProgressBar">
+      <div className="circleProgressBar" style={this.props.stylecss}>
         <div className="circleProgressBar-outside">
           <div className="circleProgressBar-outside-right">
             <div
@@ -57,6 +57,18 @@ export class CircleProcessBar extends Component {
           </div>
         </div>
         <div className="circleProgressBar-inner">{this.props.percent}%</div>
+      </div>
+    );
+  }
+}
+
+export class Loading extends Component {
+  render() {
+    return (
+      <div>
+        <div className="loading">
+          <div className="loading-inner"></div>
+        </div>
       </div>
     );
   }

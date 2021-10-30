@@ -78,4 +78,56 @@
   font-size: var(--font-size);
 }
 
+.loading {
+  --width: 50px;
+  --height: 50px;
+  width: var(--width);
+  height: var(--width);
+  background-color: grey;
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.loading-inner {
+  width: calc(var(--width) - 20px);
+  height: calc(var(--width) - 20px);
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 2;
+}
+.loading::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  clip: rect(0, calc(var(--width) / 2), calc(var(--width) / 2), 0);
+  border-radius: 50%;
+  transition: 0.5s linear;
+  animation: loadingAnima 0.5s infinite;
+}
+@keyframes loadingAnima {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /*# sourceMappingURL=tool.css.map */

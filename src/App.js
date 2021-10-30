@@ -13,12 +13,15 @@ import {
   // AiFillVideoCamera,
   AiOutlineSearch,
   AiOutlineClose,
+  AiFillEyeInvisible,
+  AiFillEye,
 } from "react-icons/ai";
-import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaTwitter, FaLinkedin, FaAsterisk } from "react-icons/fa";
+import avatar from "../src/images/250577775_1336573440093459_1633910632867587638_n.jpg";
 // import { BsCollectionPlayFill } from "react-icons/bs";
 ///////////////////////////////////////////////////import library function
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Route,
   Switch,
   Link,
@@ -26,7 +29,10 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import film_collection from "./filmCollection.json";
-import { Home, Collection, FAQ, Movie, Film } from "./contentApp";
+import { Home, Collection, FAQ, Movie, Film, Search } from "./contentApp";
+import history from "./history";
+import { Router } from "react-router-dom";
+import reactDom from "react-dom";
 
 // D:\my work\web dev\javascript\reactjs\My_project\offline\WebPhimClub\public\icon_head.png
 const kindOfLink = {
@@ -76,11 +82,21 @@ export default class App extends Component {
       upcoming: [],
       nowplaying: [],
       toprated: [],
-      search: [],
       genres: {},
       genre_ids: [],
       release_year: [],
       display_film: {},
+      search: [],
+      control_login: false,
+      login: false,
+      countlogin: 0,
+      login_timecounter: 0,
+      passvisible: false,
+    };
+    this.constVari = {
+      password: "1",
+      username: "nhantran",
+      timeban: 30,
     };
   }
   componentDidMount() {
@@ -579,6 +595,48 @@ export default class App extends Component {
     this.setState({ display_film: film });
   };
 
+  controlLogin = (x) => {
+    this.setState({ control_login: x });
+  };
+
+  accessAccount = (user, pass) => {
+    let { password, username } = this.constVari;
+    let { login, control_login, countlogin, login_timecounter } = this.state;
+    if (user === username) {
+      if (pass === password) {
+        login = true;
+        control_login = false;
+        this.setState({ login, control_login, countlogin: 0 });
+      }
+    } else {
+      countlogin = countlogin + 1;
+      if (countlogin > 4) {
+        login_timecounter = 30;
+        this.setState({ login_timecounter });
+        let id_interval = setInterval(() => {
+          login_timecounter = login_timecounter - 1;
+          login_timecounter === 0
+            ? this.setState({ login_timecounter })
+            : this.setState({ login_timecounter });
+          if (login_timecounter === 0) clearInterval(id_interval);
+        }, 1000);
+      }
+      this.setState({ countlogin });
+    }
+  };
+
+  resetLogInCounter = () => {
+    this.setState({ countlogin: 0 });
+  };
+
+  switchPassVisible = (el) => {
+    this.setState({ passvisible: el });
+  };
+
+  handleLogout = () => {
+    this.setState({ login: false });
+  };
+
   render() {
     let {
       upcoming,
@@ -588,13 +646,34 @@ export default class App extends Component {
       movies,
       release_year,
       display_film,
+      search,
+      control_login,
+      login,
+      countlogin,
+      passvisible,
+      login_timecounter,
     } = this.state;
-    // console.log(movies);
+    console.log(passvisible);
     // console.log(genres);
     return (
       <div className="app">
-        <Router>
-          <HeaderApp />
+        <Router history={history}>
+          <HeaderApp
+            trending={trending}
+            search={search}
+            movies={movies}
+            controlLogin={(el) => this.controlLogin(el)}
+            accessAccount={(user, pass) => this.accessAccount(user, pass)}
+            resetloginCounter={() => this.resetLoginCounter()}
+            switchPassVisible={(el) => this.switchPassVisible(el)}
+            handleLogout={() => this.handleLogout()}
+            control_login={control_login}
+            login={login}
+            countlogin={countlogin}
+            login_timecounter={login_timecounter}
+            passvisible={passvisible}
+          />
+          <div className="header-area"></div>
           <div>
             <ContentApp
               trending={trending}
@@ -605,6 +684,8 @@ export default class App extends Component {
               release_year={release_year}
               display_film={display_film}
               handleDisplayFilm={(el) => this.handleDisplayFilm(el)}
+              controlLogin={(el) => this.controlLogin(el)}
+              control_login={control_login}
             />
           </div>
           <FooterApp />
@@ -621,32 +702,29 @@ class HeaderApp extends Component {
       search_state: false,
       search_state_check: false,
       search_keyString: "",
-      trending: [
-        "Nhan",
-        "Handsome",
-        "Kind",
-        "Nhan",
-        "Handsome",
-        "Kind",
-        "Nhan",
-        "Handsome",
-        "Kind",
-        "Nhan",
-      ],
+      trending: this.props.trending,
       search_icon_suggest: {
         wait: "inline-block",
         display: "none",
       },
       header_bar: true,
+      password: "",
+      username: "",
+      // note_empty: false,
+      invisetting_state: false,
     };
   }
 
   componentDidMount() {
     document.addEventListener("wheel", this.handleWheelAnywhere, true);
+    window.addEventListener("scroll", this.handleScrollTop, true);
+    document.addEventListener("click", this.handleClickAnywhere);
   }
 
   componentWillUnmount() {
     document.removeEventListener("wheel", this.handleWheelAnywhere, true);
+    window.removeEventListener("scroll", this.handleScrollTop, true);
+    document.removeEventListener("click", this.handleClickAnywhere);
   }
 
   handleWheelAnywhere = (e) => {
@@ -661,6 +739,14 @@ class HeaderApp extends Component {
         header_bar: false,
       });
     }
+  };
+
+  handleScrollTop = (e) => {
+    // console.log("handleScrollTop");
+    // console.log(e);
+    // console.log(window.scrollY);
+
+    if (window.scrollY === 0) this.setState({ header_bar: true });
   };
 
   handleClickSearch = () => {
@@ -685,6 +771,12 @@ class HeaderApp extends Component {
     });
   };
 
+  handleClickAnywhere = (event) => {
+    // const dom_avatarnode = reactDom.findDOMNode(this.invisetting);
+    if (!this.invisetting.contains(event.target))
+      this.setState({ invisetting_state: false });
+  };
+
   updateSearchStateCheck = (x) => {
     x
       ? this.setState({
@@ -703,11 +795,20 @@ class HeaderApp extends Component {
         });
   };
 
+  turnOffSearchHeader = () => {
+    this.setState({ search_state: false });
+  };
+
   render() {
-    let { search_icon_suggest, search_keyString, search_state_check } =
-      this.state;
+    let {
+      search_icon_suggest,
+      search_keyString,
+      search_state_check,
+      // note_empty,
+    } = this.state;
     let { display, wait } = this.state.search_icon_suggest;
-    let { search_state, header_bar } = this.state;
+    let { search_state, header_bar, trending, invisetting_state } = this.state;
+    // console.log(trending);
     return (
       <div className="header" style={{ top: header_bar ? "0" : "-60px" }}>
         <div className="header-bar">
@@ -717,7 +818,9 @@ class HeaderApp extends Component {
               name="home"
               className="header-bar-link link-decoration"
             >
-              <img src={Logo} alt="logo web" className="home"></img>
+              <div style={{ width: "60px", height: "60px" }}>
+                <img src={Logo} alt="logo web" className="home"></img>
+              </div>
             </Link>
             <Link
               to="/WebPhimClub/movie"
@@ -725,12 +828,12 @@ class HeaderApp extends Component {
             >
               <span className="header-bar-text noselect">Movie</span>
             </Link>
-            <Link
+            {/* <Link
               to="/WebPhimClub/collection"
               className="header-bar-link link-decoration"
             >
               <span className="header-bar-text noselect">Collection</span>
-            </Link>
+            </Link> */}
             <Link
               to="/WebPhimClub/FAQ"
               className="header-bar-link link-decoration"
@@ -739,7 +842,203 @@ class HeaderApp extends Component {
             </Link>
           </div>
           <div>
-            <button className="header-bar-signin noselect">Sign In</button>
+            <div>
+              <button
+                className="header-bar-login noselect"
+                onClick={() => this.props.controlLogin(true)}
+                style={{ display: this.props.login ? "none" : "block" }}
+              >
+                Login
+              </button>
+
+              <div
+                className="header-bar-login noselect"
+                style={{ display: this.props.login ? "flex" : "none" }}
+              >
+                <div
+                  className="header-bar-login-img"
+                  ref={(el) => (this.invisetting = el)}
+                  onClick={() =>
+                    this.setState({ invisetting_state: !invisetting_state })
+                  }
+                >
+                  <img src={avatar} alt={`avatar of ${this.state.username}`} />
+                </div>
+                <div
+                  className="header-bar-login-feature"
+                  style={{ display: invisetting_state ? "block" : "none" }}
+                >
+                  <Link
+                    to="/WebPhimClub/collection"
+                    className="link-decoration"
+                  >
+                    <span>Colection</span>
+                  </Link>
+                  <span
+                    onClick={() => {
+                      this.setState({ username: "", password: "" });
+                      this.props.handleLogout();
+                    }}
+                  >
+                    Logout
+                  </span>
+                </div>
+              </div>
+              <div
+                className="wrap-login"
+                style={{
+                  display: this.props.control_login ? "block" : "none",
+                }}
+              >
+                <div className="login">
+                  <div
+                    className="login-close"
+                    onClick={(e) => {
+                      this.props.controlLogin(false);
+                      // e.preventDefault()
+                    }}
+                  >
+                    <AiOutlineClose />
+                  </div>
+                  <form
+                    onSubmit={(e) => {
+                      console.log("object");
+                      if ((this.state.username === "") | this.state.password)
+                        // this.setState({ note_empty: true });
+                        alert("Please fill username and pasword");
+                      else {
+                        this.props.login_timecounter === 0
+                          ? this.props.accessAccount(
+                              this.state.username,
+                              this.state.password
+                            )
+                          : alert(`you have to wait ${this.props.login_timecounter}s for
+                    the next time`);
+                      }
+                      e.preventDefault();
+                    }}
+                  >
+                    <div className="inputfield">
+                      <label>
+                        <span>Username:</span>
+                        <input
+                          type="text"
+                          placeholder="Username"
+                          value={this.state.username}
+                          onChange={(e) =>
+                            this.setState({ username: e.target.value })
+                          }
+                        ></input>
+                      </label>
+                    </div>
+                    <div className="inputfield">
+                      <label>
+                        <span>Password:</span>
+                        <input
+                          type={this.props.passvisible ? "text" : "password"}
+                          placeholder="Password"
+                          value={this.state.password}
+                          onChange={(e) =>
+                            this.setState({ password: e.target.value })
+                          }
+                        ></input>
+                      </label>
+                      <div className="passvisible">
+                        <AiFillEye
+                          style={{
+                            display: this.props.passvisible ? "none" : "inline",
+                          }}
+                          onClick={() => {
+                            // console.log("object");
+                            this.props.switchPassVisible(true);
+                          }}
+                        />
+                        <AiFillEyeInvisible
+                          style={{
+                            display: this.props.passvisible ? "inline" : "none",
+                          }}
+                          onClick={() => this.props.switchPassVisible(false)}
+                        />
+                      </div>
+                    </div>
+                    <div className="login-note">
+                      <div>
+                        <div
+                          style={{
+                            display:
+                              this.props.login_timecounter === 0
+                                ? "block"
+                                : "none",
+                          }}
+                        >
+                          <FaAsterisk />
+                          <span>
+                            Login failed more than 5 times will have to waite
+                            30s for the next times
+                          </span>
+                        </div>
+
+                        <div
+                          style={{
+                            display:
+                              this.props.login_timecounter > 0
+                                ? "block"
+                                : "none",
+                          }}
+                        >
+                          <FaAsterisk />
+                          <span>
+                            You have to wait {this.props.login_timecounter}s for
+                            the next time
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* <div style={{ display: note_empty ? "block" : "none" }}>
+                      <FaAsterisk />
+                      <span> please fill user and password</span>
+                    </div> */}
+                    </div>
+                    <div className="login-control">
+                      <button
+                        onClick={(e) => {
+                          console.log("object");
+                          console.log(this.state.username);
+                          console.log(this.state.password);
+                          if (
+                            (this.state.username === "") |
+                            (this.state.password === "")
+                          )
+                            // this.setState({ note_empty: true });
+                            alert("Please fill username and pasword");
+                          else {
+                            this.props.login_timecounter === 0
+                              ? this.props.accessAccount(
+                                  this.state.username,
+                                  this.state.password
+                                )
+                              : alert(`you have to wait ${this.props.login_timecounter}s for
+                      the next time`);
+                          }
+
+                          e.preventDefault();
+                        }}
+                      >
+                        Login
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          this.props.controlLogin(false);
+                          e.preventDefault();
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             <button
               className="header-bar-search"
               onClick={this.handleClickSearch}
@@ -765,8 +1064,11 @@ class HeaderApp extends Component {
           wait={wait}
           search_state={search_state}
           headerSuggestAnimationEnd={this.headerSuggestAnimationEnd}
-          trending={this.state.trending}
+          trending={trending}
           updateSearchStateCheck={this.updateSearchStateCheck}
+          search={this.props.search}
+          movies={this.props.movies}
+          close_SearchBoard={() => this.setState({ search_state: false })}
         />
       </div>
     );
@@ -774,7 +1076,14 @@ class HeaderApp extends Component {
 }
 
 class HeaderSearchResult extends Component {
-  state = { search_state_check: 0 };
+  state = {
+    search_state_check: 0,
+    trending: this.props.trending,
+    search: this.props.search,
+    searchArr_header: [],
+    movies: this.props.movies,
+    search_string: "",
+  };
   componentDidMount() {
     document.addEventListener("click", this.handleClickOutside, true);
   }
@@ -792,20 +1101,86 @@ class HeaderSearchResult extends Component {
   };
 
   handleClickResetSearchResult = () => {
+    this.setState({ search_string: "" });
     this.props.updateSearchStateCheck(true);
   };
 
+  handleChangeSearchStr = (e) => {
+    let { movies, searchArr_header } = this.state;
+    let search_string = e.target.value;
+    // console.log(e.keyCode);
+    // if (e.keyCode === 27) {
+    //   search_string = "";
+    // }
+    let search_stringArr = search_string.split(" ");
+    // console.log(search_string);
+    // console.log(search_stringArr.length);
+    searchArr_header.length = 0;
+    search_stringArr.forEach((el, i) => {
+      // console.log(el);
+      if (i === 0) {
+        movies.forEach((el1, i1) => {
+          if (el1.title.indexOf(el) >= 0)
+            searchArr_header[searchArr_header.length] = el1;
+        });
+        // console.log("searchArr_header1");
+        // console.log(searchArr_header);
+      } else {
+        let temp_searchArr_header = [];
+        searchArr_header.forEach((el1, i1) => {
+          if (el1.title.indexOf(el) >= 0) {
+            temp_searchArr_header[temp_searchArr_header.length] = el1;
+          }
+          // else console.log(el1.title);
+        });
+        searchArr_header.length = 0;
+        searchArr_header = temp_searchArr_header;
+        // console.log("searchArr_header2");
+        // console.log(searchArr_header);
+      }
+    });
+    // console.log("searchArr_header last:");
+    // console.log("Gabriel's Inferno Part III".indexOf("on"));
+    this.setState({ searchArr_header, search_string });
+  };
+
+  // handleSubmitSearchHeader = () => {
+  //   let { search_string, searchArr_header } = this.state;
+  // };
+
   render() {
+    let { trending, searchArr_header, search_string } = this.state;
+    // console.log(trending.day?.slice(0, 10));
+    // console.log(trending.week);
     return (
       <div>
         {this.props.search_state ? (
           <div className="header-search">
-            <form className="header-search-tool">
+            <form
+              className="header-search-tool"
+              onSubmit={(event) => {
+                const path = "/webFilmClub/search/";
+                let arr_search_string = search_string.split(" ");
+                let convert_search_string = "";
+                arr_search_string.forEach((el, i) =>
+                  i === arr_search_string.length - 1
+                    ? (convert_search_string = convert_search_string + el)
+                    : (convert_search_string = convert_search_string + el + "-")
+                );
+                let path_searchSTR = "1?search=" + convert_search_string;
+                if (search_string !== "") history.push(path + path_searchSTR);
+                this.props.close_SearchBoard();
+                event.preventDefault();
+              }}
+            >
               <AiOutlineSearch className="search-icon" />
               <input
                 className="header-search-tool-filled"
                 placeholder="search for movie..."
                 type="text"
+                onChange={this.handleChangeSearchStr}
+                value={search_string}
+                autoFocus
               ></input>
               <div className="close-icon">
                 <span
@@ -821,7 +1196,7 @@ class HeaderSearchResult extends Component {
               </div>
             </form>
             <div className="header-search-result">
-              {this.props.search_keyString === "" ? (
+              {search_string === "" ? (
                 <div
                   style={{
                     display: this.props.search_state_check ? "block" : "none",
@@ -831,17 +1206,58 @@ class HeaderSearchResult extends Component {
                     <FiTrendingUp className="trending-icon" />
                     <span className="trending-text">Trending</span>
                   </div>
-                  {this.props.trending.slice(0, 10).map((x, i) => {
+                  {trending.day?.slice(0, 10).map((x, i) => {
+                    let { id, title } = x;
+                    let titleArr = title.split(" ");
+                    let title_str = "";
+                    titleArr.forEach((el) => (title_str += "-" + el));
+                    let link_part = "/webFilmClub/movie/" + id + title_str;
                     return (
-                      <div key={i} className="header-search-result-items">
-                        <AiOutlineSearch className="icon" />
-                        <span className="text">{x}</span>
-                      </div>
+                      <Link
+                        to={link_part}
+                        className="link-decoration"
+                        onClick={this.props.close_SearchBoard}
+                        key={i}
+                      >
+                        <div className="header-search-result-items link-decoration">
+                          <AiOutlineSearch className="icon" />
+                          <span className="text">{title}</span>
+                        </div>
+                      </Link>
                     );
                   })}
                 </div>
               ) : (
-                <div></div>
+                <div
+                  style={{
+                    display: this.props.search_state_check ? "block" : "none",
+                  }}
+                >
+                  {/* <div className="header-search-result-trending">
+                    <FiTrendingUp className="trending-icon" />
+                    <span className="trending-text">Trending</span>
+                  </div> */}
+                  {searchArr_header?.slice(0, 10).map((x, i) => {
+                    let { id, title } = x;
+                    let titleArr = title.split(" ");
+                    let title_str = "";
+                    titleArr.forEach((el) => (title_str += "-" + el));
+                    let link_part = "/webFilmClub/movie/" + id + title_str;
+                    return (
+                      <Link
+                        to={link_part}
+                        className="link-decoration"
+                        onClick={this.props.close_SearchBoard}
+                        key={i}
+                      >
+                        <div className="header-search-result-items link-decoration">
+                          <AiOutlineSearch className="icon" />
+                          <span className="text">{title}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               )}
             </div>
           </div>
@@ -861,9 +1277,21 @@ class ContentApp extends Component {
     return (
       <div className="contentApp">
         <Switch>
-          <Route exact path="/WebPhimClub/">
-            <Home popular={this.props.popular} trending={this.props.trending} />
-          </Route>
+          <Route
+            exact
+            path="/WebPhimClub/"
+            render={(props) => {
+              return (
+                <Home
+                  popular={this.props.popular}
+                  trending={this.props.trending}
+                  history={props.history}
+                />
+              );
+            }}
+          />
+          {/* <Home popular={this.props.popular} trending={this.props.trending} />
+          </Route> */}
           <Route
             exact
             path="/WebPhimClub/movie"
@@ -881,7 +1309,37 @@ class ContentApp extends Component {
               );
             }}
           />
-          {display_film ? (
+
+          <Route
+            path="/webFilmClub/movie/:slug"
+            render={(props) => {
+              // console.log(props);
+              return (
+                <Film
+                  history={props}
+                  movies={this.props.movies}
+                  genres={this.props.genres}
+                />
+              );
+            }}
+          />
+
+          <Route
+            path="/webFilmClub/search/:slug"
+            render={(props) => {
+              console.log("/webFilmClub/search/:slug");
+              return (
+                <Search
+                  history={props}
+                  movies={this.props.movies}
+                  genres={this.props.genres}
+                  release_year={this.props.release_year}
+                />
+              );
+            }}
+          />
+
+          {/* {display_film ? (
             () => {
               let path_temp =
                 display_film.id + "-" + display_film.title.replace(" ", "-");
@@ -898,21 +1356,7 @@ class ContentApp extends Component {
             }
           ) : (
             <div></div>
-          )}
-          {/* {this.props.movies.map((elfilm) => {
-            // console.log(elfilm);
-            let path_temp = elfilm.id + "-" + elfilm.title.replace(" ", "-");
-            // console.log(path_temp);
-            return (
-              <Route
-                path={"/WebPhimClub/movie" + path_temp}
-                render={(props) => {
-                  // console.log(props);
-                  return <Film elfilm={elfilm} />;
-                }}
-              />
-            );
-          })} */}
+          )} */}
           <Route path="/WebPhimClub/collection">
             <Collection />
           </Route>
