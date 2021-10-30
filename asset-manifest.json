@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/WebPhimClub/static/css/main.785269a7.chunk.css",
-    "main.js": "/WebPhimClub/static/js/main.f9cac70c.chunk.js",
-    "main.js.map": "/WebPhimClub/static/js/main.f9cac70c.chunk.js.map",
+    "main.css": "/WebPhimClub/static/css/main.77f37c92.chunk.css",
+    "main.js": "/WebPhimClub/static/js/main.b94da1fb.chunk.js",
+    "main.js.map": "/WebPhimClub/static/js/main.b94da1fb.chunk.js.map",
     "runtime-main.js": "/WebPhimClub/static/js/runtime-main.7b581814.js",
     "runtime-main.js.map": "/WebPhimClub/static/js/runtime-main.7b581814.js.map",
-    "static/js/2.be402932.chunk.js": "/WebPhimClub/static/js/2.be402932.chunk.js",
-    "static/js/2.be402932.chunk.js.map": "/WebPhimClub/static/js/2.be402932.chunk.js.map",
+    "static/js/2.8c6c65b1.chunk.js": "/WebPhimClub/static/js/2.8c6c65b1.chunk.js",
+    "static/js/2.8c6c65b1.chunk.js.map": "/WebPhimClub/static/js/2.8c6c65b1.chunk.js.map",
     "index.html": "/WebPhimClub/index.html",
-    "static/css/main.785269a7.chunk.css.map": "/WebPhimClub/static/css/main.785269a7.chunk.css.map",
-    "static/js/2.be402932.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.be402932.chunk.js.LICENSE.txt",
+    "static/css/main.77f37c92.chunk.css.map": "/WebPhimClub/static/css/main.77f37c92.chunk.css.map",
+    "static/js/2.8c6c65b1.chunk.js.LICENSE.txt": "/WebPhimClub/static/js/2.8c6c65b1.chunk.js.LICENSE.txt",
+    "static/media/250577775_1336573440093459_1633910632867587638_n.5cf38459.jpg": "/WebPhimClub/static/media/250577775_1336573440093459_1633910632867587638_n.5cf38459.jpg",
     "static/media/App.css": "/WebPhimClub/static/media/film.6e3c5348.jpg",
     "static/media/icon.d4773499.png": "/WebPhimClub/static/media/icon.d4773499.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7b581814.js",
-    "static/js/2.be402932.chunk.js",
-    "static/css/main.785269a7.chunk.css",
-    "static/js/main.f9cac70c.chunk.js"
+    "static/js/2.8c6c65b1.chunk.js",
+    "static/css/main.77f37c92.chunk.css",
+    "static/js/main.b94da1fb.chunk.js"
   ]
 }
